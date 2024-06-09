@@ -1,0 +1,11 @@
+{
+    "name": "FootyFlow",
+    "image": "ghcr.io/motain/codespaces-data-engineering@sha256:9d89032a4167504ec28bce952a5aede6fe71af2c1e43ddb55488b2a530ebb2f2",
+    "postCreateCommand": "pip install -r requirements.txt",
+    "extensions": [
+      "ms-python.python",
+      "ms-vscode-remote.remote-containers"
+    ],
+    "runArgs": ["--shm-size=1g", "--cap-add=SYS_ADMIN", "--device=/dev/net/tun"]
+  }
+  
