@@ -96,14 +96,3 @@ class HashiCorpAPIClient:
             logger.error(f"An error occurred: {err}")
             raise
 
-# Example usage
-if __name__ == "__main__":
-    try:
-        client = HashiCorpAPIClient()
-        secret_data = client.get_secret()
-        if secret_data:
-            logger.info(f"Secret Data: {secret_data}")
-        else:
-            logger.warning("No secret data returned")
-    except Exception as e:
-        logger.error(f"Failed to retrieve secret: {e}")
