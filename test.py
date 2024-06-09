@@ -9,10 +9,9 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("FootyFlow - Data Extraction")
 
 
-class FootballAPI:
+class Extraction:
     def __init__(self, api_key):
-        client = HashiCorpAPIClient()
-        self.api_key = client.get_secret()
+        self.api_key = api_key
         self.base_url = "https://apiv3.apifootball.com/"
         self.timeout = 30
         self.connect_timeout = 5
@@ -42,8 +41,8 @@ class FootballAPI:
 
 # Example usage
 if __name__ == "__main__":
-    APIkey = 'xxxxxxxxxxxxxx'  # Replace with your actual API key
-    football_api = FootballAPI(APIkey)
+    client = HashiCorpAPIClient()
+    football_api = Extraction(client.get_secret())
 
     country_set = 'Germany'
     country_id = football_api.get_country_id(country_set)
