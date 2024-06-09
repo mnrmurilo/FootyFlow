@@ -1,10 +1,10 @@
 import os
 import requests
-import json
-from dotenv import load_dotenv
 import logging
+from dotenv import load_dotenv
 
 load_dotenv()
+
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("FootyFlow - Vault Token Request")

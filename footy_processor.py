@@ -3,6 +3,9 @@ from footy_data_collector import FootyCollector
 from footy_data_loader import FootyLoader
 import os
 import logging
+from dotenv import load_dotenv
+
+load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("FootyFlow - Processor")
@@ -20,37 +23,31 @@ class FootyDataProcessor:
         country_id = footy_collector.get_country_id(country_name)
         leagues = footy_collector.get_leagues(country_id)
         return leagues
-    
-    def get_table_schema(self, data_sample):
-        table_schema = {}
-        for data in data_sample.values():
-            table_schema['league_id'] = 'INTEGER PRIMARY KEY'
-            for key, value in data.items():
-                data_type = 'INTEGER' if isinstance(value, int) else 'TEXT'
-                table_schema[key] = data_type
-        return table_schema
 
     def insert_league_data(self, leagues):
-        table_schema = self.get_table_schema(leagues)
+        table_schema = self.db.get_table_schema(leagues)
         self.db.create_table_if_not_exists("leagues", table_schema)
-
-        for league in leagues:
+        for league in leagues.keys():
             values = {
-                "league_id": int(league["league_id"]),
-                "league_name": league["league_name"],
-                "season": league["season"]
+                "league_id": int(league),
+                "league_name": leagues[league]['league_name'],
+                "season": leagues[league]["season"]
             }
             self.db.upsert_values("leagues", values, unique_columns=["league_id"])
 
     def close(self):
         self.db.close_connection()
 
+class MainProcessor:
+    def __init__(self):
+        self.processor = FootyDataProcessor(os.getenv("DB_PATH"))
+
+    def run(self):
+        country_set = 'Brazil'
+        leagues = self.processor.process_country_data(country_set)
+        self.processor.insert_league_data(leagues)
+        self.processor.close()
+
 if __name__ == "__main__":
-    db_path = "/temp/footy.sqlite3"
-    processor = FootyDataProcessor(db_path)
-
-    country_set = 'Brazil'
-    leagues = processor.process_country_data(country_set)
-    processor.insert_league_data(leagues)
-
-    processor.close()
+    main = MainProcessor()
+    main.run()
