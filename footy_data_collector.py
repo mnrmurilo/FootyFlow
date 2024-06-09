@@ -1,6 +1,4 @@
 import requests
-
-import requests
 import logging
 
 logging.basicConfig(level=logging.INFO)
