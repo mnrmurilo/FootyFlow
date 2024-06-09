@@ -7,7 +7,7 @@ import logging
 load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("Football Pipeline")
+logger = logging.getLogger("FootyFlow - Vault Token Request")
 
 ORGANIZATION_ID = os.getenv("VLT_ORG_ID")
 PROJECT_ID = os.getenv("VLT_PROJECT_ID")
